@@ -1,18 +1,44 @@
 import React from 'react'
+import axios from 'axios';
+import { useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { useEffect } from 'react';
+import doctorImage from "/images/girl-doctor.jpg"
 
-
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
 const Detail = () => {
  
-  // Consumiendo el parametro dinamico de la URL deberan hacer un fetch a un user en especifico
+  const params = useParams();
 
+  const apiUrl = `https://jsonplaceholder.typicode.com/users/${params.id}`;
+
+  const [dentista, setDentista] = useState({});
+  
+  useEffect(() => {
+    axios(apiUrl).then((res) => {
+      setDentista(res.data)
+    }).catch((error) => {
+      console.log(error)
+    })
+    }, []);
+ 
   return (
-    <>
-      <h1>Detail Dentist id </h1>
-      {/* aqui deberan renderizar la informacion en detalle de un user en especifico */}
-      {/* Deberan mostrar el name - email - phone - website por cada user en especifico */}
-    </>
+    <div className='detail-page'>
+      <h1>📑 Detalle del dentista: </h1>
+      <section className='detail'>
+        <div>
+          
+          <img src={doctorImage} alt="imagen doctor" className='img-detail'/>
+        </div>
+        <div>
+          <p> <b>Nombre: </b> {dentista.name}</p>
+          <p> <b>Username: </b> {dentista.username}</p>
+          <p><b>Email: </b> {dentista.email}</p>
+          <p><b>Teléfono: </b> {dentista.phone}</p>
+          <p><b>Sitio web: </b> {dentista.website}</p>
+        </div>
+      </section>
+    </div>
   )
 }
 
